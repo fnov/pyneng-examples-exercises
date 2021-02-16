@@ -24,3 +24,21 @@ Out[1]: '11111111111111111111111111110000'
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+
+cidr = input('Введите IP-сети в формате CIDR (aa.bb.cc.dd/xx) ').split('/')
+ipaddr = [int(i) for i in cidr[0].split('.')]
+
+netmask = int(cidr[1])
+binmask = '1' * netmask + '0' * (32 - netmask)
+octmask = [int(binmask[i - 8:i], 2) for i in range(8, len(binmask) + 1, 8)]
+
+out_net = ['Network:',
+           '{0:<8}  {1:<8}  {2:<8}  {3:<8}',
+           '{0:08b}  {1:08b}  {2:08b}  {3:08b}']
+out_mask = ['Mask:',
+            '/{mask}',
+            '{0:<8}  {1:<8}  {2:<8}  {3:<8}',
+            '{0:08b}  {1:08b}  {2:08b}  {3:08b}']
+
+print('\n'.join(out_net).format(*ipaddr))
+print('\n'.join(out_mask).format(*octmask, mask=netmask))
