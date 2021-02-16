@@ -46,3 +46,6 @@ london_co = {
         "routing": True,
     },
 }
+
+host = input("Введите имя устройства: ")
+print(london_co.get(host, "go fuck yourself"))
