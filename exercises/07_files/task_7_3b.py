@@ -17,3 +17,16 @@ Enter VLAN number: 10
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+ivlan = input('Enter VLAN number: ')
+
+lines = []
+
+with open('CAM_table.txt', 'r') as file:
+    for line in file:
+        if line.count('.') >= 2 and line.split()[0] == ivlan:
+            lines.append(line.split())
+
+
+for vlan, mac, _, intf in sorted(lines, key=lambda l: int(l[0])):  # sort by int(vlan)
+    print(f"{vlan:<8} {mac:19} {intf}")

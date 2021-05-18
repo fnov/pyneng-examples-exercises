@@ -20,3 +20,10 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+
+with open('CAM_table.txt', 'r') as file:
+    for line in file:
+        if line.count('.') >= 2:
+            vlan, mac, _, intf = line.split()
+            print(f"{vlan:9}{mac:20}{intf}")
