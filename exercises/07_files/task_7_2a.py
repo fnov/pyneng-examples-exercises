@@ -15,5 +15,12 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from sys import argv
 
 ignore = ["duplex", "alias", "configuration"]
+
+
+with open(argv[1], 'r') as conf:
+    for line in conf:
+        if line[0] != '!' and not any(i in line for i in ignore):
+            print(line, end='')
