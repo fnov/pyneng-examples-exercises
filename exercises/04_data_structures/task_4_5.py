@@ -22,3 +22,14 @@
 
 command1 = "switchport trunk allowed vlan 1,2,3,5,8"
 command2 = "switchport trunk allowed vlan 1,3,8,9"
+
+
+def get_vlan_nums(string: str) -> set:
+    return set(string.split()[-1].split(','))
+
+
+vlans1 = get_vlan_nums(command1)
+vlans2 = get_vlan_nums(command2)
+result = sorted(vlans1 & vlans2)
+
+print(result)
