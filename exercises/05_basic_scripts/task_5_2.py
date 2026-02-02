@@ -30,3 +30,27 @@ Out[1]: '11111111111111111111111111110000'
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+import ipaddress
+
+##############################
+ip_template = '''
+Network:
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+
+mask_template = '''
+Mask:
+/{mask}
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+
+ip_address = input('Введите IP-адрес и маску подсети в формате *.*.*.*/* ')
+ip, netmask = ip_address.split('/')
+netmask = int(netmask)
+ip_octets = [ int(octet) for octet in ip.split(".") ]
+bin_mask = "1" * netmask + "0" * (32 - netmask)
+bin_mask_octets = [ bin_mask[i:i+8] for i in range(0, 32, 8) ]
+dec_mask_octets = [ int(b, 2) for b in bin_mask_octets ]
+print(ip_template.format(*ip_octets), mask_template.format(*dec_mask_octets, mask=netmask))
