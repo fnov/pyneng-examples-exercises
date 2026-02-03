@@ -49,3 +49,31 @@ bin_ip = "00001010000000010000000111000011"
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+##############################
+ip_template = '''
+Network:
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+
+mask_template = '''
+Mask:
+/{mask}
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+
+ip_address = input('Введите IP-адрес и маску подсети в формате *.*.*.*/* ')
+ip, netmask = ip_address.split('/')
+netmask = int(netmask)
+tail = 32 - netmask
+
+ip_octets = [ int(octet) for octet in ip.split(".") ]
+bin_ip = '{0:08b}{1:08b}{2:08b}{3:08b}'.format(*ip_octets)
+bin_net = bin_ip[:-tail] + ('0' * tail)
+dec_net_octets = [ int(bin_net[i:i+8], 2) for i in range(0, 32, 8) ]
+
+bin_mask = "1" * netmask + ("0" * tail)
+dec_mask_octets = [ int(bin_mask[i:i+8], 2) for i in range(0, 32, 8) ]
+print(ip_template.format(*dec_net_octets), mask_template.format(*dec_mask_octets, mask=netmask))
