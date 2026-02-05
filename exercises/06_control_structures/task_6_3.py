@@ -60,9 +60,10 @@ access_template = [
 ]
 
 trunk_template = [
-    "switchport trunk encapsulation dot1q",
-    "switchport mode trunk",
-    "switchport trunk allowed vlan",
+    "interface FastEthernet{}",
+    " switchport trunk encapsulation dot1q",
+    " switchport mode trunk",
+    " switchport trunk allowed vlan {}{}",
 ]
 
 access = {"0/12": "10", "0/14": "11", "0/16": "17", "0/17": "150"}
@@ -82,3 +83,14 @@ trunk = {
 #         else:
 #             print(f" {command}")
 
+##################################
+
+for intf, data in trunk.items():
+    if data[0] == 'del':
+        command = 'remove '
+    elif data[0] == 'only':
+        command = ''
+    else:
+        command = 'add '
+    template = "\n".join(trunk_template).format(intf, command, ",".join(data[1:]))
+    print(template)
