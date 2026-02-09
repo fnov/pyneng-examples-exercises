@@ -40,3 +40,15 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+######################
+
+data_list = []
+
+with open("CAM_table.txt", 'r') as file:
+    for line in file:
+        data = line.split()
+        if data and data[0].isdigit():
+            data_list.append([int(data[0]), data[1], data[3]])
+
+for vlan, mac, iface in sorted(data_list):
+    print(f'{vlan:<9}{mac:<20}{iface}')

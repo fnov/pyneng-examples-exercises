@@ -20,3 +20,12 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+######################
+
+with open("CAM_table.txt", 'r') as file:
+    for line in file:
+        data = line.split()
+        if data and data[0].isdigit():
+            vlan, mac, _, iface = data
+            print(f'{vlan:9}{mac:20}{iface}')
