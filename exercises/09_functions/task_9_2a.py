@@ -35,7 +35,6 @@
 
 """
 
-
 trunk_mode_template = [
     "switchport mode trunk",
     "switchport trunk native vlan 999",
@@ -47,3 +46,27 @@ trunk_config = {
     "FastEthernet0/2": [11, 30],
     "FastEthernet0/4": [17],
 }
+####################
+
+
+def generate_trunk_config(intf_vlan_mapping: dict, trunk_template: list) -> dict[str, list[str]]:
+    """
+    Возвращает словарь всех портов в режиме trunk с конфигурацией на основе шаблона
+    Args:
+        intf_vlan_mapping: словарь с соответствием интерфейс-VLAN такого вида:
+                            {'FastEthernet0/12':10,
+                             'FastEthernet0/14':11,
+                             'FastEthernet0/16':17}
+        trunk_template: список команд для порта в режиме access
+    Returns: словарь всех портов в режиме trunk с конфигурацией на основе шаблона
+    """
+    result = {}
+    for iface, vlans in intf_vlan_mapping.items():
+        commands = []
+        for line in trunk_template:
+            if line.endswith('allowed vlan'):
+                commands.append(f'{line} {','.join([str(i) for i in vlans])}')
+            else:
+                commands.append(line)
+        result[iface] = commands
+    return result

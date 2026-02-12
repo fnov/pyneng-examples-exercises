@@ -23,3 +23,27 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+###################
+
+iface_str, vlan_str = "interface", "vlan "
+
+def get_int_vlan_map(config_filename: str) -> tuple[dict, dict]:
+    access_dict = {}
+    trunk_dict = {}
+    with open(config_filename, 'r') as file:
+        search_vlan = False
+        for line in file:
+            if not search_vlan:
+                if iface_str in line:
+                    iface = line.split()[-1]
+                    search_vlan = True
+                else:
+                    continue
+            else:
+                if vlan_str in line:
+                    if "access" in line:
+                        access_dict[iface] = int(line.split()[-1])
+                    elif "trunk" in line:
+                        trunk_dict[iface] = [int(i) for i in line.split()[-1].split(',')]
+                    search_vlan = False
+    return access_dict, trunk_dict
