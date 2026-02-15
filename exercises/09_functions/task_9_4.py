@@ -44,6 +44,7 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+#################################
 
 ignore = ["!", "duplex", "alias", "configuration"]
 
@@ -59,23 +60,22 @@ def ignore_command(command, ignore):
     * True, если в команде содержится слово из списка ignore
     * False - если нет
     """
-    ignore_status = False
-    for word in ignore:
-        if word in command:
-            ignore_status = True
-    return ignore_status
+    return any(word in command for word in ignore)
 
 
-def convert_config_to_dict(config_filename: str):
+def convert_config_to_dict(config_filename: str) -> dict:
     with open(config_filename, 'r') as file:
         config_dict = {}
         for line in file:
-            if ignore_command(line, ignore):
+            clean_line = line.strip()
+            # Если строка не пустая и нет запретных слов:
+            if not clean_line or ignore_command(line, ignore):
                 continue
             elif not line.startswith(" "):
-                key = line.strip()
+                key = clean_line
                 config_dict[key] = []
             else:
-                config_dict[key].append(line.strip())
+                config_dict[key].append(clean_line)
     return config_dict
 
+convert_config_to_dict("config_sw1.txt")
