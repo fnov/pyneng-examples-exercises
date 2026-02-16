@@ -35,7 +35,7 @@ R6           Fa 0/2          143           R S I           2811       Fa 0/0
 """
 
 
-def parse_cdp_neighbors(command_output):
+def parse_cdp_neighbors(command_output: str) -> dict:
     """
     Тут мы передаем вывод команды одной строкой потому что именно в таком виде будет
     получен вывод команды с оборудования. Принимая как аргумент вывод команды,
@@ -43,7 +43,16 @@ def parse_cdp_neighbors(command_output):
     и с файлами и с выводом с оборудования.
     Плюс учимся работать с таким выводом.
     """
-
+    result_dict = {}
+    lines = command_output.strip().split("\n")
+    host = lines[0].split('>')[0]
+    index = 1 + next((i for i, line in enumerate(lines) if 'Device ID' in line))
+    for line in lines[index:]:
+        data = line.split()
+        key = (host, f'{data[1]}{data[2]}')
+        neighbor = (data[0], f'{data[-2]}{data[-1]}')
+        result_dict[key] = neighbor
+    return result_dict
 
 if __name__ == "__main__":
     with open("sh_cdp_n_sw1.txt") as f:

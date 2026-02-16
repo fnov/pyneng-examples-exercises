@@ -73,6 +73,7 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from jedi.parser_utils import clean_scope_docstring
 
 infiles = [
     "sh_cdp_n_sw1.txt",
@@ -80,3 +81,20 @@ infiles = [
     "sh_cdp_n_r2.txt",
     "sh_cdp_n_r3.txt",
 ]
+#########################
+from draw_network_graph import draw_topology
+from task_11_2 import create_network_map
+
+
+def unique_network_map(topology_dict: dict) -> dict:
+    result_dict = {}
+    for key, value in topology_dict.items():
+        if not value in result_dict.keys():
+            result_dict[key] = value
+    return result_dict
+
+
+if __name__ == "__main__":
+    raw_topology = create_network_map(infiles)
+    clean_topology = unique_network_map(raw_topology)
+    draw_topology(clean_topology)
