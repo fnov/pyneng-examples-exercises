@@ -34,3 +34,37 @@
  '172.21.41.129', '172.21.41.130', '172.21.41.131', '172.21.41.132']
 
 """
+######################
+from ipaddress import ip_address
+
+
+def convert_ranges_to_ip_list(ip_list: list) -> list:
+    result_ips = []
+    for ip_range in ip_list:
+        if '-' in ip_range:
+            start, end = ip_range.split('-')
+            if len(end.split('.')) < 4:
+                end = '{0}.{1}.{2}.{3}'.format(*start.split('.')[:-1], end)
+            start_ip = ip_address(start)
+            end_ip = ip_address(end)
+            ip_range_list = [str(ip_address(ip)) for ip in range(int(start_ip), int(end_ip) + 1)]
+            result_ips.extend(ip_range_list)
+        else:
+            result_ips.append(ip_range)
+    return result_ips
+
+
+def ip_to_int(ip: str) -> int:
+    """Преобразует IP-адрес в целое число."""
+    parts = ip.split('.')
+    return (int(parts[0]) << 24) + (int(parts[1]) << 16) + (int(parts[2]) << 8) + int(parts[3])
+
+
+def int_to_ip(num: int) -> str:
+    """Преобразует целое число обратно в IP-адрес."""
+    return f"{(num >> 24) & 255}.{(num >> 16) & 255}.{(num >> 8) & 255}.{num & 255}"
+
+
+if __name__ == '__main__':
+    ips = ['8.8.4.4', '1.1.1.1-3', '172.21.41.128-172.21.41.132']
+    converted_ips = convert_ranges_to_ip_list(ips)
