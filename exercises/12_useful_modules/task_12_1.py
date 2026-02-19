@@ -46,4 +46,4 @@ def run_command(command):
 
 
 if __name__ == "__main__":
-    ping_ip_addresses(['8.8.8.8', '1.1.1.1', '10.255.255.254' ])
+    ping_ip_addresses(['8.8.8.8', '1.1.1.1', '10.255.255.254'])
