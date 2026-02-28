@@ -24,3 +24,19 @@
 а не ввод пользователя.
 
 """
+#####################
+import re
+
+
+def get_ip_from_cfg(filename: str) -> dict[str, tuple[str, str]]:
+    regex = re.compile(r'(?s)interface (\w+\d[/\d]*)'
+                       r'[^!]+?'
+                       r'ip address ([\d.]+) ([\d.]+)')
+    with open(filename) as file:
+       data = re.findall(regex, file.read())
+       result = {iface: (ip, mask) for iface, ip, mask, in data}
+       return result
+
+
+if __name__ == '__main__':
+    get_ip_from_cfg('config_r1.txt')
