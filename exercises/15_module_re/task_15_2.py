@@ -26,13 +26,13 @@ import re
 
 
 def parse_sh_ip_int_br(filename:str) -> list:
-    regex = (r'(\S+)\s+'
-             r'([\S+]+)\s+'
-             r'\w+\s+\w+\s+'
-             r'(up|(?:administratively )*down)\s+'
-             r'(up|down)')
+    regex = re.compile(r'(\S+)\s+'
+                     r'([\S+]+)\s+'
+                     r'\w+\s+\w+\s+'
+                     r'(up|(?:administratively )*down)\s+'
+                     r'(up|down)')
     with open(filename) as file:
-       result = re.findall(regex, file.read())
+       result = regex.findall(file.read())
     return result
 
 
